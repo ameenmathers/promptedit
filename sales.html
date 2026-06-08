@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>PromptEdit. The grocery store for AI. One payment. Every model.</title>
+  <meta name="description" content="Where do you actually go to use Veo, Kling, Runway, ElevenLabs and every other AI tool? PromptEdit is the grocery store for AI. One payment. No subscriptions." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: {
+              950: '#07070b', 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a25',
+              600: '#262633', 500: '#3a3a4a', 400: '#6b6b80', 300: '#a1a1b3',
+              200: '#d4d4dc', 100: '#f4f4f6',
+            },
+            lime: { DEFAULT: '#d4f542', soft: '#e6ff80', ink: '#1f2a00' },
+            fuchsia: { DEFAULT: '#ff5cb0', soft: '#ffb3d9' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
+          },
+          boxShadow: {
+            glow: '0 0 0 1px rgba(212,245,66,0.4), 0 8px 40px -8px rgba(212,245,66,0.35)',
+            lift: '0 24px 60px -24px rgba(0,0,0,0.6)',
+          },
+          backgroundImage: {
+            'grain': "url(\"data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html, body { background: #07070b; color: #f4f4f6; }
+    body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    .font-display { font-family: 'Instrument Serif', ui-serif, Georgia, serif; letter-spacing: -0.01em; }
+
+    .letter p { line-height: 1.7; }
+    .letter p + p { margin-top: 1.1em; }
+
+    .hl {
+      background: linear-gradient(180deg, transparent 60%, rgba(212,245,66,0.30) 60%, rgba(212,245,66,0.30) 92%, transparent 92%);
+      padding: 0 0.1em;
+    }
+    .hl-fuchsia {
+      background: linear-gradient(180deg, transparent 60%, rgba(255,92,176,0.28) 60%, rgba(255,92,176,0.28) 92%, transparent 92%);
+      padding: 0 0.1em;
+    }
+
+    .strike { position: relative; color: #6b6b80; }
+    .strike::after { content: ''; position: absolute; inset: 50% 0 auto 0; height: 2px; background: #ff5cb0; transform: rotate(-4deg); }
+
+    @keyframes drift {
+      0%   { transform: translate3d(0,0,0) scale(1); }
+      50%  { transform: translate3d(2%, -3%, 0) scale(1.08); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+    .drift { animation: drift 14s ease-in-out infinite; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+    @keyframes spin-slow { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    .spin-slow { animation: spin-slow 30s linear infinite; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-track { animation: marquee 38s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+
+    .mask-fade {
+      mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+
+    details[open] summary .chev { transform: rotate(45deg); }
+
+    .lazy { content-visibility: auto; contain-intrinsic-size: 1px 800px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .drift, .marquee-track, .pulse-dot, .spin-slow { animation: none !important; }
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-ink-950 text-ink-100 antialiased">
+
+<div class="relative z-50 bg-lime text-lime-ink text-center text-xs sm:text-sm font-semibold py-2 px-4">
+  <span class="inline-flex items-center gap-2">
+    <span class="inline-block w-1.5 h-1.5 rounded-full bg-lime-ink pulse-dot"></span>
+    Launch pricing ends Sunday. Save $400 on the one-time deal.
+  </span>
+</div>
+
+<header class="sticky top-0 z-40 backdrop-blur-xl bg-ink-950/70 border-b border-white/5">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-4">
+    <a href="index.html" class="flex items-center gap-2 shrink-0">
+      <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-lime text-lime-ink font-bold">P</span>
+      <span class="font-semibold tracking-tight">promptedit</span>
+    </a>
+    <a href="#offer" class="inline-flex items-center gap-1.5 rounded-full bg-lime hover:bg-lime-soft transition px-4 h-9 text-sm font-semibold text-lime-ink">
+      Get instant access
+      <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</header>
+
+<section class="relative overflow-hidden">
+  <div aria-hidden="true" class="absolute inset-0 -z-10">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[1100px] rounded-full drift"
+         style="background: radial-gradient(closest-side, rgba(212,245,66,0.18), rgba(255,92,176,0.10) 45%, transparent 70%); filter: blur(40px);"></div>
+    <div class="absolute inset-0 bg-grain opacity-[0.35] mix-blend-overlay"></div>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink-950"></div>
+  </div>
+
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 pt-14 sm:pt-20 pb-12 sm:pb-16 text-center">
+    <p class="text-sm sm:text-base text-fuchsia-soft font-medium tracking-wide">An honest letter to anyone editing video in 2026</p>
+
+    <h1 class="mt-6 font-display text-5xl sm:text-6xl lg:text-[5.5rem] leading-[0.95] tracking-tight">
+      Where do you <span class="italic">actually</span> go to use Veo, Kling,<br class="hidden sm:block"/>
+      Runway, Sora, ElevenLabs <span class="text-ink-300 italic">and</span> every other AI tool?
+    </h1>
+
+    <p class="mt-7 font-display text-2xl sm:text-3xl text-ink-200">
+      You sign up to 6 different sites. You pay 6 different bills.<br class="hidden sm:block"/>
+      Or… you don't. And you fall behind.
+    </p>
+
+    <p class="mt-8 text-lg sm:text-xl text-ink-300 max-w-2xl mx-auto leading-relaxed">
+      There's a third option nobody told you about. <span class="hl text-ink-100 font-semibold">It's called PromptEdit, and it's basically a grocery store for AI.</span>
+    </p>
+
+    <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="#offer" class="inline-flex items-center justify-center gap-2 rounded-full bg-lime hover:bg-lime-soft transition px-7 h-14 text-base sm:text-lg font-semibold text-lime-ink shadow-glow">
+        Click to get started today
+        <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <p class="mt-5 text-sm text-ink-400">
+      One payment · No subscription · 30-day refund · <span class="text-lime">2,140 creators joined this month</span>
+    </p>
+
+    <div class="mt-8 inline-flex items-center gap-3 text-sm text-ink-300">
+      <div class="flex -space-x-2">
+        <span class="inline-block w-7 h-7 rounded-full ring-2 ring-ink-950 bg-gradient-to-br from-fuchsia to-purple-500"></span>
+        <span class="inline-block w-7 h-7 rounded-full ring-2 ring-ink-950 bg-gradient-to-br from-lime to-emerald-500"></span>
+        <span class="inline-block w-7 h-7 rounded-full ring-2 ring-ink-950 bg-gradient-to-br from-sky-400 to-indigo-500"></span>
+        <span class="inline-block w-7 h-7 rounded-full ring-2 ring-ink-950 bg-gradient-to-br from-orange-400 to-fuchsia"></span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="text-lime tracking-tight">★★★★★</span>
+        <span class="text-ink-300">4.9 from 2,140+ creators</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="border-y border-white/5 bg-ink-900/60 py-7">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <p class="text-center text-xs uppercase tracking-[0.18em] text-ink-400 mb-5">
+      Every leading model. Already inside your account.
+    </p>
+    <div class="marquee overflow-hidden mask-fade">
+      <div class="marquee-track flex items-center gap-10 whitespace-nowrap w-max">
+        <span class="model-chip">Veo 3</span>
+        <span class="model-chip">Kling 2.5</span>
+        <span class="model-chip">Nano Banana</span>
+        <span class="model-chip">Flux 1.1</span>
+        <span class="model-chip">Runway Gen 4</span>
+        <span class="model-chip">Suno v4</span>
+        <span class="model-chip">ElevenLabs</span>
+        <span class="model-chip">Sora</span>
+        <span class="model-chip">Ideogram 3</span>
+        <span class="model-chip">Stable Video</span>
+        <span class="model-chip">Veo 3</span>
+        <span class="model-chip">Kling 2.5</span>
+        <span class="model-chip">Nano Banana</span>
+        <span class="model-chip">Flux 1.1</span>
+        <span class="model-chip">Runway Gen 4</span>
+        <span class="model-chip">Suno v4</span>
+        <span class="model-chip">ElevenLabs</span>
+        <span class="model-chip">Sora</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style type="text/tailwindcss">
+  .model-chip { @apply inline-flex items-center gap-2 text-ink-300 text-base sm:text-lg font-medium; }
+  .model-chip::before { content: ''; @apply inline-block w-1.5 h-1.5 rounded-full bg-lime/70; }
+</style>
+
+<section class="py-20 sm:py-28 lazy">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 letter">
+    <p class="text-xs uppercase tracking-[0.2em] text-fuchsia font-semibold">First, let's name the problem</p>
+    <h2 class="mt-3 font-display text-4xl sm:text-5xl leading-[1.05] tracking-tight">
+      You're not behind because you can't edit.<br/>
+      You're behind because <span class="italic text-ink-300">every AI tool is in a different store</span>.
+    </h2>
+
+    <div class="mt-8 text-lg text-ink-200">
+      <p>
+        Here's how editing a single 90-second reel looks for most creators in 2026:
+      </p>
+      <p>
+        You open Runway in one tab. You open ElevenLabs in another. You open Epidemic for the music bed. You open Artgrid for the establishing shot. You bounce to Nano Banana for a thumbnail. You realise the thumbnail needs a different style so you open Midjourney too. <span class="hl-fuchsia">You're now twelve tabs deep before you've cut a single frame.</span>
+      </p>
+      <p>
+        Every one of those services bills you separately. Every one has a different credit system. Every one stores your work in a different folder. None of them live inside Premiere or DaVinci, so you're exporting, re-importing, exporting, re-importing, burning hours on file shuffling that has nothing to do with the actual edit.
+      </p>
+      <p>
+        And the worst part? <span class="font-semibold text-ink-100">Your competitor is doing the same thing. So you both feel busy without either of you getting faster.</span>
+      </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="rounded-xl border border-white/10 bg-ink-800/40 p-5 text-center">
+        <div class="font-display text-4xl text-fuchsia">12</div>
+        <p class="mt-1 text-xs text-ink-400 leading-snug">tabs open per reel</p>
+      </div>
+      <div class="rounded-xl border border-white/10 bg-ink-800/40 p-5 text-center">
+        <div class="font-display text-4xl text-fuchsia">$487</div>
+        <p class="mt-1 text-xs text-ink-400 leading-snug">avg monthly stack</p>
+      </div>
+      <div class="rounded-xl border border-white/10 bg-ink-800/40 p-5 text-center">
+        <div class="font-display text-4xl text-fuchsia">38%</div>
+        <p class="mt-1 text-xs text-ink-400 leading-snug">time wasted shuffling</p>
+      </div>
+      <div class="rounded-xl border border-white/10 bg-ink-800/40 p-5 text-center">
+        <div class="font-display text-4xl text-fuchsia">0</div>
+        <p class="mt-1 text-xs text-ink-400 leading-snug">live inside your editor</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 sm:py-28 bg-ink-900/60 border-y border-white/5 lazy">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6">
+    <p class="text-center text-xs uppercase tracking-[0.2em] text-lime font-semibold">Introducing</p>
+    <h2 class="mt-4 text-center font-display text-5xl sm:text-7xl leading-[0.95] tracking-tight">
+      PromptEdit.<br/>
+      <span class="italic text-ink-300">The grocery store for AI.</span>
+    </h2>
+
+    <div class="mt-10 letter text-lg text-ink-200 max-w-3xl mx-auto">
+      <p class="text-center text-xl text-ink-100">
+        Imagine if every model, every editing asset, every plugin you needed lived <span class="hl font-semibold">on one shelf, behind one prompt box, on one bill.</span>
+      </p>
+      <p>
+        That's what we built. PromptEdit is a single workspace where you type a prompt, and every leading AI model. Veo, Kling, Runway, Sora, Nano Banana, Flux, ElevenLabs, Suno, all of them. They generate a take at once. You pick the winner. You drag it to your timeline. You keep going.
+      </p>
+      <p>
+        Right next to the prompt box is a <span class="font-semibold text-ink-100">100,000-asset marketplace</span> of LUTs, sound effects, music, overlays, and templates. Same search. Same library. Royalty free.
+      </p>
+      <p>
+        And the whole thing lives <span class="hl-fuchsia font-semibold">inside Premiere Pro and DaVinci Resolve</span> as a native panel. No browser tab. No re-importing. No alt-tabbing.
+      </p>
+      <p class="text-center font-display text-3xl sm:text-4xl text-white pt-4">
+        One shelf. One subscription you can cancel.<br/>
+        Or pay <span class="italic text-lime">once</span> and own it.
+      </p>
+    </div>
+
+    <div class="mt-14 rounded-3xl border border-white/10 bg-ink-800/60 overflow-hidden shadow-lift">
+      <div class="p-4 sm:p-5 border-b border-white/10 flex items-center gap-3">
+        <div class="flex-1 flex items-center gap-3 rounded-xl bg-ink-900 border border-white/5 px-3 sm:px-4 h-12">
+          <svg viewBox="0 0 20 20" class="w-4 h-4 text-ink-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h9" stroke-linecap="round"/></svg>
+          <span class="flex-1 text-sm sm:text-base text-ink-100 truncate">Aerial pull-back from a lone surfer at golden hour, glassy waves</span>
+        </div>
+        <button class="inline-flex items-center gap-1.5 rounded-full bg-lime hover:bg-lime-soft transition px-4 h-10 text-sm font-semibold text-lime-ink shrink-0">
+          Run all 4
+        </button>
+      </div>
+      <div class="p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="rounded-xl overflow-hidden border border-white/5 relative aspect-[9/12]" style="background: linear-gradient(160deg, #fb923c 0%, #ef4444 40%, #312e81 100%);">
+          <div class="absolute inset-0 bg-grain opacity-30 mix-blend-overlay"></div>
+          <div class="absolute top-2 left-2 rounded-full bg-black/40 backdrop-blur px-2 py-0.5 text-[10px] uppercase tracking-wider text-white">Veo 3</div>
+        </div>
+        <div class="rounded-xl overflow-hidden border border-white/5 relative aspect-[9/12] ring-2 ring-lime" style="background: linear-gradient(160deg, #fbbf24 0%, #db2777 50%, #4c1d95 100%);">
+          <div class="absolute inset-0 bg-grain opacity-30 mix-blend-overlay"></div>
+          <div class="absolute top-2 left-2 rounded-full bg-lime text-lime-ink px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold">Runway · winner</div>
+        </div>
+        <div class="rounded-xl overflow-hidden border border-white/5 relative aspect-[9/12]" style="background: linear-gradient(160deg, #06b6d4 0%, #0e7490 50%, #1e3a8a 100%);">
+          <div class="absolute inset-0 bg-grain opacity-30 mix-blend-overlay"></div>
+          <div class="absolute top-2 left-2 rounded-full bg-black/40 backdrop-blur px-2 py-0.5 text-[10px] uppercase tracking-wider text-white">Kling 2.5</div>
+        </div>
+        <div class="rounded-xl overflow-hidden border border-white/5 relative aspect-[9/12]" style="background: linear-gradient(160deg, #a78bfa 0%, #6d28d9 50%, #0f172a 100%);">
+          <div class="absolute inset-0 bg-grain opacity-30 mix-blend-overlay"></div>
+          <div class="absolute top-2 left-2 rounded-full bg-black/40 backdrop-blur px-2 py-0.5 text-[10px] uppercase tracking-wider text-white">Sora</div>
+        </div>
+      </div>
+      <div class="px-4 sm:px-5 py-3 border-t border-white/10 text-xs text-ink-400 text-center">
+        Same prompt → 4 models in parallel → pick the winner → drag to timeline. That's the entire workflow.
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="#offer" class="inline-flex items-center justify-center gap-2 rounded-full bg-lime hover:bg-lime-soft transition px-7 h-14 text-lg font-semibold text-lime-ink shadow-glow">
+        Click to get started today
+        <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 sm:py-28 lazy">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <p class="text-center text-xs uppercase tracking-[0.2em] text-lime font-semibold">What's in the store</p>
+    <h2 class="mt-3 text-center font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.02] tracking-tight">
+      Four aisles. <span class="italic text-ink-300">Every tool you've ever paid for.</span>
+    </h2>
+    <p class="mt-5 text-center text-lg text-ink-300 max-w-2xl mx-auto">
+      Each aisle has every leading model. New models are stocked within a week of release.
+    </p>
+
+    <div class="mt-16 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-lime/15 border border-lime/30 px-3 py-1 text-xs font-semibold text-lime">Aisle 1 · Video</span>
+        <h3 class="mt-4 font-display text-4xl sm:text-5xl leading-tight">Generate B-roll, ads, music videos.</h3>
+        <p class="mt-4 text-lg text-ink-300 leading-relaxed">
+          Type a prompt. Watch <span class="hl text-ink-100 font-semibold">Veo 3, Kling 2.5, Runway Gen 4, Sora and Stable Video</span> generate the same shot at the same time. Pick the winner in 30 seconds.
+        </p>
+        <ul class="mt-5 space-y-2 text-base text-ink-100">
+          <li class="flex gap-2"><span class="text-lime mt-1">→</span> 4K resolution, frame-rate auto-matched to your sequence</li>
+          <li class="flex gap-2"><span class="text-lime mt-1">→</span> Vertical, square and widescreen presets in one click</li>
+          <li class="flex gap-2"><span class="text-lime mt-1">→</span> Image-to-video for character consistency</li>
+        </ul>
+        <p class="mt-5 text-sm text-ink-400">Replaces: Runway Pro ($95), Sora Pro ($200), Stable Video ($20). <span class="text-ink-200">$315/mo retail</span></p>
+      </div>
+      <div class="rounded-3xl border border-white/10 bg-ink-800/40 p-5 shadow-lift">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="aspect-[9/12] rounded-xl relative overflow-hidden" style="background: linear-gradient(160deg, #fb923c, #312e81);"><div class="absolute inset-0 bg-grain opacity-30"></div><div class="absolute top-2 left-2 rounded-full bg-black/50 backdrop-blur px-2 py-0.5 text-[10px] uppercase text-white">Veo 3</div></div>
+          <div class="aspect-[9/12] rounded-xl relative overflow-hidden ring-2 ring-lime" style="background: linear-gradient(160deg, #fbbf24, #4c1d95);"><div class="absolute inset-0 bg-grain opacity-30"></div><div class="absolute top-2 left-2 rounded-full bg-lime text-lime-ink px-2 py-0.5 text-[10px] uppercase font-semibold">Runway · pick</div></div>
+          <div class="aspect-[9/12] rounded-xl relative overflow-hidden" style="background: linear-gradient(160deg, #06b6d4, #1e3a8a);"><div class="absolute inset-0 bg-grain opacity-30"></div><div class="absolute top-2 left-2 rounded-full bg-black/50 backdrop-blur px-2 py-0.5 text-[10px] uppercase text-white">Kling 2.5</div></div>
+          <div class="aspect-[9/12] rounded-xl relative overflow-hidden" style="background: linear-gradient(160deg, #a78bfa, #0f172a);"><div class="absolute inset-0 bg-grain opacity-30"></div><div class="absolute top-2 left-2 rounded-full bg-black/50 backdrop-blur px-2 py-0.5 text-[10px] uppercase text-white">Sora</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div class="lg:order-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-fuchsia/15 border border-fuchsia/30 px-3 py-1 text-xs font-semibold text-fuchsia">Aisle 2 · Image</span>
+        <h3 class="mt-4 font-display text-4xl sm:text-5xl leading-tight">Thumbnails, ad creative, brand assets.</h3>
+        <p class="mt-4 text-lg text-ink-300 leading-relaxed">
+          <span class="hl-fuchsia text-ink-100 font-semibold">Nano Banana, Flux 1.1, Ideogram 3 and Midjourney</span> in the same prompt box. Reference images. Style transfer. In-paint, out-paint, expand canvas. All one click.
+        </p>
+        <ul class="mt-5 space-y-2 text-base text-ink-100">
+          <li class="flex gap-2"><span class="text-fuchsia mt-1">→</span> Brand kits lock your colors and fonts on every generation</li>
+          <li class="flex gap-2"><span class="text-fuchsia mt-1">→</span> Bulk-generate 20 thumbnail variants from one brief</li>
+          <li class="flex gap-2"><span class="text-fuchsia mt-1">→</span> Upscale to 8K for print</li>
+        </ul>
+        <p class="mt-5 text-sm text-ink-400">Replaces: Midjourney Pro ($60), Ideogram ($20), Flux Pro ($18). <span class="text-ink-200">$98/mo retail</span></p>
+      </div>
+      <div class="lg:order-1 rounded-3xl border border-white/10 bg-ink-800/40 p-5 shadow-lift">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="aspect-square rounded-xl relative overflow-hidden" style="background: linear-gradient(135deg,#fb7185,#7c3aed);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+          <div class="aspect-square rounded-xl relative overflow-hidden" style="background: linear-gradient(135deg,#facc15,#f97316);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+          <div class="aspect-square rounded-xl relative overflow-hidden ring-2 ring-fuchsia" style="background: linear-gradient(135deg,#f472b6,#9333ea);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+          <div class="aspect-square rounded-xl relative overflow-hidden" style="background: linear-gradient(135deg,#22d3ee,#0c4a6e);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-sky-400/15 border border-sky-400/30 px-3 py-1 text-xs font-semibold text-sky-300">Aisle 3 · Audio</span>
+        <h3 class="mt-4 font-display text-4xl sm:text-5xl leading-tight">Voiceover, music, sound design.</h3>
+        <p class="mt-4 text-lg text-ink-300 leading-relaxed">
+          <span class="hl text-ink-100 font-semibold">ElevenLabs voice and Suno v4 music</span>, plus the entire SFX library, all in your audio track. Clone your own voice. Generate a 2-minute custom song. Drop it.
+        </p>
+        <ul class="mt-5 space-y-2 text-base text-ink-100">
+          <li class="flex gap-2"><span class="text-sky-300 mt-1">→</span> 29 languages with native accents</li>
+          <li class="flex gap-2"><span class="text-sky-300 mt-1">→</span> Voice cloning from 30 seconds of sample</li>
+          <li class="flex gap-2"><span class="text-sky-300 mt-1">→</span> Full songs, stems, ambient beds</li>
+        </ul>
+        <p class="mt-5 text-sm text-ink-400">Replaces: ElevenLabs ($22), Suno Pro ($10), Epidemic ($19). <span class="text-ink-200">$51/mo retail</span></p>
+      </div>
+      <div class="rounded-3xl border border-white/10 bg-ink-800/40 p-6 shadow-lift">
+        <div class="space-y-3">
+          <div class="rounded-lg bg-ink-900 border border-white/5 px-3 py-3 flex items-center gap-3">
+            <button class="shrink-0 w-9 h-9 rounded-full bg-lime text-lime-ink flex items-center justify-center">
+              <svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="currentColor"><path d="M7 5v10l8-5z"/></svg>
+            </button>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-ink-100 truncate">Warm female VO · 28s</p>
+              <div class="mt-1 flex items-center gap-0.5 h-5">
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:35%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:65%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:45%"></span>
+                <span class="w-1 bg-sky-400 rounded-full" style="height:85%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:70%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:55%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:75%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:40%"></span>
+                <span class="w-1 bg-sky-400/60 rounded-full" style="height:60%"></span>
+                <span class="w-1 bg-sky-400/30 rounded-full" style="height:50%"></span>
+                <span class="w-1 bg-sky-400/30 rounded-full" style="height:35%"></span>
+                <span class="w-1 bg-sky-400/30 rounded-full" style="height:65%"></span>
+              </div>
+            </div>
+            <span class="text-[10px] text-lime font-semibold uppercase">ElevenLabs</span>
+          </div>
+          <div class="rounded-lg bg-ink-900 border border-white/5 px-3 py-3 flex items-center gap-3">
+            <button class="shrink-0 w-9 h-9 rounded-full bg-lime text-lime-ink flex items-center justify-center">
+              <svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="currentColor"><path d="M7 5v10l8-5z"/></svg>
+            </button>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-ink-100 truncate">Lo-fi bed · 2:14</p>
+              <div class="mt-1 flex items-center gap-0.5 h-5">
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:55%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:45%"></span>
+                <span class="w-1 bg-fuchsia rounded-full" style="height:75%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:60%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:80%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:50%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:65%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:40%"></span>
+                <span class="w-1 bg-fuchsia/60 rounded-full" style="height:55%"></span>
+                <span class="w-1 bg-fuchsia/30 rounded-full" style="height:35%"></span>
+                <span class="w-1 bg-fuchsia/30 rounded-full" style="height:70%"></span>
+                <span class="w-1 bg-fuchsia/30 rounded-full" style="height:45%"></span>
+              </div>
+            </div>
+            <span class="text-[10px] text-lime font-semibold uppercase">Suno v4</span>
+          </div>
+          <div class="rounded-lg bg-ink-900 border border-white/5 px-3 py-3 flex items-center gap-3">
+            <button class="shrink-0 w-9 h-9 rounded-full bg-lime text-lime-ink flex items-center justify-center">
+              <svg viewBox="0 0 20 20" class="w-3.5 h-3.5" fill="currentColor"><path d="M7 5v10l8-5z"/></svg>
+            </button>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-semibold text-ink-100 truncate">Cinematic whoosh · 1.2s</p>
+              <div class="mt-1 flex items-center gap-0.5 h-5">
+                <span class="w-1 bg-lime/60 rounded-full" style="height:25%"></span>
+                <span class="w-1 bg-lime/60 rounded-full" style="height:40%"></span>
+                <span class="w-1 bg-lime rounded-full" style="height:95%"></span>
+                <span class="w-1 bg-lime rounded-full" style="height:80%"></span>
+                <span class="w-1 bg-lime/60 rounded-full" style="height:50%"></span>
+                <span class="w-1 bg-lime/30 rounded-full" style="height:30%"></span>
+                <span class="w-1 bg-lime/30 rounded-full" style="height:20%"></span>
+                <span class="w-1 bg-lime/20 rounded-full" style="height:15%"></span>
+                <span class="w-1 bg-lime/20 rounded-full" style="height:10%"></span>
+                <span class="w-1 bg-lime/10 rounded-full" style="height:8%"></span>
+                <span class="w-1 bg-lime/10 rounded-full" style="height:6%"></span>
+                <span class="w-1 bg-lime/10 rounded-full" style="height:5%"></span>
+              </div>
+            </div>
+            <span class="text-[10px] text-lime font-semibold uppercase">SFX library</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div class="lg:order-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-lime/15 border border-lime/30 px-3 py-1 text-xs font-semibold text-lime">Aisle 4 · Plugins</span>
+        <h3 class="mt-4 font-display text-4xl sm:text-5xl leading-tight">Inside Premiere. Inside DaVinci.</h3>
+        <p class="mt-4 text-lg text-ink-300 leading-relaxed">
+          The killer feature nobody else has: <span class="hl text-ink-100 font-semibold">the whole grocery store runs as a panel inside your editor.</span> No browser tab. No re-importing. Drag straight to the timeline.
+        </p>
+        <ul class="mt-5 space-y-2 text-base text-ink-100">
+          <li class="flex gap-2"><span class="text-lime mt-1">→</span> Premiere Pro 2024+ &amp; DaVinci Resolve 19+ supported</li>
+          <li class="flex gap-2"><span class="text-lime mt-1">→</span> Auto-match resolution and frame rate to your sequence</li>
+          <li class="flex gap-2"><span class="text-lime mt-1">→</span> CapCut support shipping Q3</li>
+        </ul>
+        <p class="mt-5 text-sm text-ink-400">Replaces: this category literally didn't exist before. <span class="text-ink-200">Priceless.</span></p>
+      </div>
+      <div class="lg:order-1 rounded-3xl border border-white/10 bg-ink-950 shadow-lift overflow-hidden">
+        <div class="h-9 flex items-center gap-1.5 px-3 border-b border-white/10 bg-ink-900">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+          <span class="ml-3 text-xs text-ink-400">Premiere Pro · campaign_final.prproj</span>
+        </div>
+        <div class="grid grid-cols-12 h-[300px]">
+          <div class="col-span-7 border-r border-white/10 p-3 flex flex-col gap-3">
+            <div class="flex-1 rounded-md relative overflow-hidden" style="background: linear-gradient(135deg, #312e81, #ea580c 80%);">
+              <div class="absolute inset-0 bg-grain opacity-30 mix-blend-overlay"></div>
+            </div>
+            <div class="h-16 rounded-md bg-ink-900 border border-white/10 p-2 flex flex-col gap-1">
+              <div class="h-3 rounded bg-gradient-to-r from-lime/60 to-lime/10 w-[70%]"></div>
+              <div class="h-3 rounded bg-gradient-to-r from-fuchsia/50 to-fuchsia/10 w-[50%] ml-8"></div>
+              <div class="h-3 rounded bg-white/10 w-[85%]"></div>
+            </div>
+          </div>
+          <div class="col-span-5 bg-ink-900 flex flex-col">
+            <div class="flex items-center gap-2 px-3 h-9 border-b border-white/10">
+              <span class="w-5 h-5 rounded bg-lime text-lime-ink flex items-center justify-center font-bold text-[10px]">P</span>
+              <span class="text-xs font-semibold">PromptEdit</span>
+            </div>
+            <div class="p-2 grid grid-cols-2 gap-1.5 flex-1">
+              <div class="aspect-square rounded" style="background: linear-gradient(135deg,#fb923c,#7c3aed);"></div>
+              <div class="aspect-square rounded" style="background: linear-gradient(135deg,#22d3ee,#0e7490);"></div>
+              <div class="aspect-square rounded ring-2 ring-lime" style="background: linear-gradient(135deg,#facc15,#db2777);"></div>
+              <div class="aspect-square rounded" style="background: linear-gradient(135deg,#a78bfa,#0f172a);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 text-center">
+      <a href="#offer" class="inline-flex items-center justify-center gap-2 rounded-full bg-lime hover:bg-lime-soft transition px-7 h-14 text-lg font-semibold text-lime-ink shadow-glow">
+        Click to get started today
+        <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 sm:py-28 bg-ink-900/60 border-y border-white/5 lazy">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <p class="text-center text-xs uppercase tracking-[0.2em] text-lime font-semibold">Bonus aisle</p>
+    <h2 class="mt-3 text-center font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.02] tracking-tight">
+      Plus 100,000+ assets. <span class="italic text-ink-300">Free.</span>
+    </h2>
+    <p class="mt-5 text-center text-lg text-ink-300 max-w-2xl mx-auto">
+      Royalty free. Vetted. Sortable by mood. The kind of polish you used to pay Epidemic, Artgrid and Motion Array for.
+    </p>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#fb7185,#7c3aed);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">4,200<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">cinematic LUTs</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#22d3ee,#3b82f6);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">60,000<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">sound effects</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#10b981,#065f46);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">12,000<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">music tracks</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#facc15,#f97316);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">2,800<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">overlays</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#f472b6,#9333ea);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">3,100<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">text animations</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#312e81,#0ea5e9);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">5,400<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">backgrounds</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#1e293b,#0ea5e9);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">9,200<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">templates</div>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-5 flex items-center gap-4">
+        <div class="aspect-square w-12 rounded-lg relative overflow-hidden shrink-0" style="background: linear-gradient(135deg,#a3e635,#15803d);"><div class="absolute inset-0 bg-grain opacity-30"></div></div>
+        <div>
+          <div class="font-display text-2xl text-white leading-none">3,300<span class="text-lime">+</span></div>
+          <div class="text-xs text-ink-400 mt-1">transitions</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-8 text-center text-base text-ink-300">
+      Worth <span class="strike">$162/mo</span> &nbsp;<span class="text-lime font-semibold">included free</span> with every plan.
+    </p>
+  </div>
+</section>
+
+<section class="py-20 sm:py-28 lazy">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <p class="text-center text-xs uppercase tracking-[0.2em] text-lime font-semibold">Is this for you?</p>
+    <h2 class="mt-3 text-center font-display text-4xl sm:text-5xl leading-tight">
+      PromptEdit is built for <span class="italic">you</span> if…
+    </h2>
+
+    <div class="mt-12 grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex gap-4">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-lime/15 text-lime flex items-center justify-center font-bold">✓</div>
+        <div>
+          <p class="font-semibold text-ink-100">You're a YouTuber or freelance editor.</p>
+          <p class="mt-2 text-sm text-ink-300 leading-relaxed">You ship 2-8 videos a month. AI B-roll could save you a shoot day every week, but only if it lives inside Premiere.</p>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex gap-4">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-lime/15 text-lime flex items-center justify-center font-bold">✓</div>
+        <div>
+          <p class="font-semibold text-ink-100">You run social for a brand or SaaS.</p>
+          <p class="mt-2 text-sm text-ink-300 leading-relaxed">You need 40 versions of a hook by Friday. Variants, aspect ratios, voiceovers. Speed is everything.</p>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex gap-4">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-lime/15 text-lime flex items-center justify-center font-bold">✓</div>
+        <div>
+          <p class="font-semibold text-ink-100">You run a creative agency.</p>
+          <p class="mt-2 text-sm text-ink-300 leading-relaxed">You're tired of forwarding 11 invoices to bookkeeping. You want one bill, pooled credits, brand kits, SOC 2.</p>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex gap-4">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-lime/15 text-lime flex items-center justify-center font-bold">✓</div>
+        <div>
+          <p class="font-semibold text-ink-100">You're a course creator or coach.</p>
+          <p class="mt-2 text-sm text-ink-300 leading-relaxed">You film lessons weekly. You need polished cuts, animated callouts, custom thumbnails, without hiring out.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 sm:py-28 bg-ink-900/60 border-y border-white/5 lazy">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <p class="text-center text-xs uppercase tracking-[0.2em] text-lime font-semibold">Real creators · real receipts</p>
+    <h2 class="mt-3 text-center font-display text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight">
+      "Replaced six tabs. <span class="italic text-ink-300">Same morning.</span>"
+    </h2>
+
+    <figure class="mt-12 rounded-3xl border border-lime/30 bg-gradient-to-br from-lime/[0.06] via-ink-800/60 to-ink-900 p-8 sm:p-10 shadow-glow">
+      <div class="flex flex-col sm:flex-row gap-6 items-start">
+        <div class="shrink-0">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-fuchsia to-purple-500 ring-4 ring-ink-950"></div>
+        </div>
+        <div class="flex-1">
+          <div class="flex gap-0.5 text-lime mb-3 text-lg" aria-label="5 stars">★★★★★</div>
+          <blockquote class="font-display text-2xl sm:text-3xl text-white leading-snug">
+            "My daughter and I got <span class="hl text-ink-950 font-sans font-semibold not-italic">more editing done in 3 hours than we normally do in 3 days.</span> The Premiere panel is the unlock. I never leave the timeline."
+          </blockquote>
+          <figcaption class="mt-5 flex items-center gap-3 text-sm">
+            <div>
+              <p class="font-semibold text-ink-100">Maya R.</p>
+              <p class="text-ink-400">Freelance editor · 380k YouTube subs · cancelled Runway + Eleven + Epidemic</p>
+            </div>
+          </figcaption>
+        </div>
+      </div>
+    </figure>
+
+    <div class="mt-6 grid md:grid-cols-3 gap-4 sm:gap-5">
+      <figure class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex flex-col">
+        <div class="flex gap-0.5 text-lime mb-3" aria-label="5 stars">★★★★★</div>
+        <blockquote class="text-base text-ink-100 leading-relaxed flex-1">
+          "We were at $480/mo across six tools. Studio plan is $129 and we ship campaigns <span class="hl text-ink-950 font-semibold">40% faster</span>. Finance loves us."
+        </blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500"></span>
+          <div>
+            <p class="text-sm font-semibold">Daniel K.</p>
+            <p class="text-xs text-ink-400">Creative director · Linde Studio</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex flex-col">
+        <div class="flex gap-0.5 text-lime mb-3" aria-label="5 stars">★★★★★</div>
+        <blockquote class="text-base text-ink-100 leading-relaxed flex-1">
+          "Side-by-side model comparison is the killer feature. Veo vs Kling for the same prompt. <span class="hl text-ink-950 font-semibold">Pick the winner in 30 seconds</span>."
+        </blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-fuchsia"></span>
+          <div>
+            <p class="text-sm font-semibold">Jules O.</p>
+            <p class="text-xs text-ink-400">Social lead · early stage SaaS</p>
+          </div>
+        </figcaption>
+      </figure>
+
+      <figure class="rounded-2xl border border-white/10 bg-ink-800/40 p-6 flex flex-col">
+        <div class="flex gap-0.5 text-lime mb-3" aria-label="5 stars">★★★★★</div>
+        <blockquote class="text-base text-ink-100 leading-relaxed flex-1">
+          "I shot a B-roll gap in Veo while my client was on the call. Dropped it on the timeline before we hung up. <span class="hl text-ink-950 font-semibold">They didn't know.</span>"
+        </blockquote>
+        <figcaption class="mt-5 flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500"></span>
+          <div>
+            <p class="text-sm font-semibold">Priya M.</p>
+            <p class="text-xs text-ink-400">YT educator · 1.2M subs</p>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="offer" class="relative py-20 sm:py-28 lazy overflow-hidden">
+  <div aria-hidden="true" class="absolute inset-0 -z-10">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full drift"
+         style="background: radial-gradient(closest-side, rgba(212,245,66,0.18), rgba(255,92,176,0.10) 50%, transparent 75%); filter: blur(50px);"></div>
+  </div>
+  <div class="mx-auto max-w-4xl px-4 sm:px-6">
+    <div class="text-center">
+      <p class="text-xs uppercase tracking-[0.2em] text-lime font-semibold">Here's the deal</p>
+      <h2 class="mt-4 font-display text-5xl sm:text-6xl lg:text-7xl leading-[0.95] tracking-tight">
+        Get everything for <span class="italic text-ink-300">less than one</span> Runway subscription.
+      </h2>
+    </div>
+
+    <div class="mt-14 rounded-3xl border border-white/10 bg-ink-800/40 overflow-hidden">
+      <div class="px-6 sm:px-8 py-5 bg-white/[0.03] border-b border-white/10">
+        <p class="text-xs uppercase tracking-[0.18em] text-ink-400">Here's everything you're getting</p>
+      </div>
+      <ul class="divide-y divide-white/5">
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">5 leading video models · Veo, Kling, Runway, Sora, Stable Video</span>
+          </div>
+          <span class="text-ink-300 strike text-sm">$315/mo</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">4 image models · Nano Banana, Flux, Ideogram, Midjourney</span>
+          </div>
+          <span class="text-ink-300 strike text-sm">$98/mo</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">Audio · ElevenLabs voice + Suno music + SFX library</span>
+          </div>
+          <span class="text-ink-300 strike text-sm">$51/mo</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">100,000+ asset marketplace · LUTs, SFX, music, overlays</span>
+          </div>
+          <span class="text-ink-300 strike text-sm">$110/mo</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">Premiere Pro native panel <span class="text-lime text-xs font-semibold ml-1">[BONUS]</span></span>
+          </div>
+          <span class="text-ink-300 text-sm">included</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">DaVinci Resolve native panel <span class="text-lime text-xs font-semibold ml-1">[BONUS]</span></span>
+          </div>
+          <span class="text-ink-300 text-sm">included</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">Commercial license on every output <span class="text-lime text-xs font-semibold ml-1">[BONUS]</span></span>
+          </div>
+          <span class="text-ink-300 text-sm">included</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">PromptEdit Prompt Library · 800+ tested prompts <span class="text-lime text-xs font-semibold ml-1">[BONUS]</span></span>
+          </div>
+          <span class="text-ink-300 strike text-sm">$49</span>
+        </li>
+        <li class="px-6 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="text-lime text-lg">✓</span>
+            <span class="text-ink-100">"AI for Editors" 2-hour video course <span class="text-lime text-xs font-semibold ml-1">[BONUS]</span></span>
+          </div>
+          <span class="text-ink-300 strike text-sm">$197</span>
+        </li>
+      </ul>
+      <div class="px-6 sm:px-8 py-5 bg-ink-900/60 border-t border-white/10 flex items-center justify-between">
+        <span class="text-ink-100 font-semibold text-base">Total value</span>
+        <span class="font-display text-3xl text-ink-300 strike">$820/mo</span>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center">
+      <p class="font-display text-3xl sm:text-4xl text-ink-200">Today, you pay just…</p>
+
+      <div class="mt-6 grid md:grid-cols-2 gap-4 sm:gap-5 max-w-3xl mx-auto">
+
+        <div class="relative rounded-3xl border-2 border-lime bg-gradient-to-br from-lime/[0.08] via-ink-800/80 to-ink-900 p-7 sm:p-8 flex flex-col shadow-glow text-left">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-lime text-lime-ink px-3 h-6 text-xs font-bold uppercase tracking-wide">
+            Best deal · save $400
+          </span>
+          <p class="text-xs uppercase tracking-[0.18em] text-lime font-semibold">One-time payment</p>
+          <p class="mt-2 font-display text-3xl text-white leading-none">Founder Pack</p>
+          <p class="mt-2 text-sm text-ink-300">Lifetime access. No subscription, ever.</p>
+
+          <div class="mt-6 flex items-baseline gap-2">
+            <span class="font-display text-6xl text-white">$97</span>
+            <span class="text-ink-300 text-sm">once</span>
+          </div>
+          <div class="mt-1 flex items-center gap-2 text-sm">
+            <span class="strike text-ink-400">$497</span>
+            <span class="text-lime font-semibold">80% off · launch only</span>
+          </div>
+
+          <a href="#" class="mt-6 inline-flex items-center justify-center gap-2 h-14 rounded-full bg-lime hover:bg-lime-soft transition text-base font-bold text-lime-ink shadow-glow">
+            Click to claim my Founder Pack
+            <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+
+          <ul class="mt-6 space-y-2.5 text-sm text-ink-100">
+            <li class="flex gap-2"><span class="text-lime">✓</span> <strong>1,500 credits</strong> · never expire</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Lifetime access to all models</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Full marketplace · forever</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Both Premiere &amp; DaVinci plugins</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Prompt Library + AI for Editors course</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Top up credits anytime at <strong>20% off</strong></li>
+          </ul>
+        </div>
+
+        <div class="rounded-3xl border border-white/15 bg-ink-800/40 p-7 sm:p-8 flex flex-col text-left">
+          <p class="text-xs uppercase tracking-[0.18em] text-ink-400 font-semibold">Monthly subscription</p>
+          <p class="mt-2 font-display text-3xl text-white leading-none">Creator</p>
+          <p class="mt-2 text-sm text-ink-300">Steady creators who ship every week.</p>
+
+          <div class="mt-6 flex items-baseline gap-2">
+            <span class="font-display text-6xl text-white">$31</span>
+            <span class="text-ink-300 text-sm">/ mo</span>
+          </div>
+          <div class="mt-1 flex items-center gap-2 text-sm">
+            <span class="strike text-ink-400">$39/mo</span>
+            <span class="text-lime font-semibold">20% off yearly</span>
+          </div>
+
+          <a href="#" class="mt-6 inline-flex items-center justify-center gap-2 h-14 rounded-full border border-white/20 hover:bg-white/[0.06] transition text-base font-semibold">
+            Start with 7-day trial
+          </a>
+
+          <ul class="mt-6 space-y-2.5 text-sm text-ink-200">
+            <li class="flex gap-2"><span class="text-lime">✓</span> <strong>1,200 credits</strong> / month · rolls over</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Full marketplace · all assets</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Both Premiere &amp; DaVinci plugins</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> 4K · no watermarks · commercial license</li>
+            <li class="flex gap-2"><span class="text-lime">✓</span> Cancel any time, one click</li>
+            <li class="flex gap-2 text-ink-400"><span class="text-ink-500">×</span> Bonus course not included</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-8 text-sm text-ink-400">
+        Working with a team? <a href="#" class="text-lime hover:text-lime-soft font-semibold">Studio plan</a> · 10 seats · pooled credits · SOC 2 · $103/mo
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 sm:py-28 bg-ink-900/60 border-y border-white/5 lazy">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6">
+    <div class="grid sm:grid-cols-[auto,1fr] gap-8 sm:gap-10 items-center">
+
+      <div class="relative shrink-0 mx-auto">
+        <div class="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-gradient-to-br from-lime via-lime-soft to-lime border-4 border-lime-ink/30 shadow-[0_0_60px_-10px_rgba(212,245,66,0.6)] flex items-center justify-center">
+          <svg viewBox="0 0 200 200" class="absolute inset-0 spin-slow" aria-hidden="true">
+            <defs>
+              <path id="circle-text" d="M 100, 100 m -78, 0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0"/>
+            </defs>
+            <text fill="#1f2a00" font-size="13" font-weight="700" letter-spacing="3" font-family="Inter">
+              <textPath href="#circle-text">100% MONEY BACK · NO QUESTIONS · 100% MONEY BACK · NO QUESTIONS · </textPath>
+            </text>
+          </svg>
+          <div class="relative text-center text-lime-ink">
+            <div class="font-display text-5xl leading-none">30</div>
+            <div class="text-xs font-bold uppercase tracking-widest mt-1">Day</div>
+            <div class="text-[10px] font-semibold uppercase tracking-wider mt-0.5">Guarantee</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center sm:text-left">
+        <h2 class="font-display text-4xl sm:text-5xl leading-tight">
+          Try it. <span class="italic text-ink-300">Hate it?</span> Get every cent back.
+        </h2>
+        <p class="mt-5 text-lg text-ink-200 leading-relaxed">
+          Use PromptEdit for 30 days. Generate as many clips as you want. Drop the marketplace assets into client work. Install the Premiere panel.
+        </p>
+        <p class="mt-3 text-lg text-ink-200 leading-relaxed">
+          If at any point you decide it's not for you, email us. <span class="hl font-semibold">No survey, no support runaround, no fine print.</span> We refund the full amount the same business day. You keep the assets you've already exported.
+        </p>
+        <p class="mt-3 text-lg text-ink-200 leading-relaxed">
+          That's how confident we are this replaces six of your subscriptions.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 sm:py-20 lazy">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 text-center">
+    <p class="text-xs uppercase tracking-[0.2em] text-fuchsia font-semibold">One last thing</p>
+    <h2 class="mt-3 font-display text-4xl sm:text-5xl leading-tight">
+      Founder Pack pricing ends Sunday at midnight.
+    </h2>
+    <p class="mt-5 text-lg text-ink-300">
+      After that, the one-time deal goes back to $497. The monthly plan stays at $39 with no discount. <span class="text-ink-100 font-semibold">If you've read this far, you already know.</span>
+    </p>
+    <div class="mt-8">
+      <a href="#offer" class="inline-flex items-center justify-center gap-2 rounded-full bg-lime hover:bg-lime-soft transition px-8 h-14 text-lg font-bold text-lime-ink shadow-glow">
+        Click to get started today
+        <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="py-20 sm:py-28 bg-ink-900/60 border-y border-white/5 lazy">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6">
+    <div class="text-center mb-10">
+      <p class="text-xs uppercase tracking-[0.2em] text-lime font-semibold">Last few questions</p>
+      <h2 class="mt-3 font-display text-4xl sm:text-5xl leading-tight">
+        Frequently asked.
+      </h2>
+    </div>
+
+    <div class="divide-y divide-white/10 rounded-2xl border border-white/10 bg-ink-800/30">
+      <details class="group p-5 sm:p-6 open:bg-white/[0.02]" open>
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">Is the Founder Pack really one payment forever?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">Yes. You pay $97 once and the account is yours for life. You get 1,500 credits to use whenever you want, with no expiry. Need more later? Top-ups are 20% off forever for Founder Pack holders. New models we add will be in your account automatically.</p>
+      </details>
+      <details class="group p-5 sm:p-6">
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">Can I use what I generate in client work, ads, and broadcast?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">Yes. Every output on a paid plan ships with a full commercial license. Use it in paid ads, YouTube monetization, TV, client deliverables, even merch. Marketplace assets are royalty free for the same uses.</p>
+      </details>
+      <details class="group p-5 sm:p-6">
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">How do credits work across so many different models?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">One credit pool, every model. A 5-second Veo clip is about 40 credits. A Nano Banana image is about 3. An ElevenLabs voice line is about 1. We show the cost before you click Generate, and you only pay for the outputs you actually keep.</p>
+      </details>
+      <details class="group p-5 sm:p-6">
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">Will the plugins work with my version of Premiere or DaVinci?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">Premiere Pro 2024 or newer, DaVinci Resolve 19 or newer. CapCut and Final Cut land in Q3 2026. Installation is two clicks. Download from your dashboard, restart your editor, the panel appears in the Window menu.</p>
+      </details>
+      <details class="group p-5 sm:p-6">
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">Can I share my account with my team?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">The Founder Pack and Creator plan are single-seat. For team use, Studio gives you 10 pooled seats, shared workspaces, brand kits, SSO, and one invoice instead of ten.</p>
+      </details>
+      <details class="group p-5 sm:p-6">
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">What if I want a refund?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">Email refund@promptedit.com within 30 days. We refund the same business day, no survey, no questions. You keep everything you've exported.</p>
+      </details>
+      <details class="group p-5 sm:p-6">
+        <summary class="flex items-center gap-4 cursor-pointer list-none">
+          <span class="font-medium text-base sm:text-lg">Do you train on my prompts or my outputs?</span>
+          <span class="chev ml-auto inline-block w-5 h-5 transition text-ink-300">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-3 text-ink-300 text-sm leading-relaxed">No, never. Prompts and outputs are private to your workspace by default. Studio adds SOC 2, audit logs, SSO and the option to auto-expire history.</p>
+      </details>
+    </div>
+
+    <p class="mt-8 text-center text-sm text-ink-400">
+      Still on the fence? <a href="mailto:hi@promptedit.com" class="text-lime hover:text-lime-soft font-semibold">Email us</a>. Same-day reply.
+    </p>
+  </div>
+</section>
+
+<section class="relative py-20 sm:py-28 overflow-hidden lazy">
+  <div aria-hidden="true" class="absolute inset-0 -z-10">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full drift"
+         style="background: radial-gradient(closest-side, rgba(212,245,66,0.25), rgba(255,92,176,0.12) 50%, transparent 75%); filter: blur(60px);"></div>
+  </div>
+  <div class="mx-auto max-w-3xl px-4 sm:px-6">
+    <div class="rounded-3xl border border-white/10 bg-ink-800/40 backdrop-blur p-8 sm:p-12 letter">
+      <p class="font-display text-3xl sm:text-4xl text-white leading-tight">P.S. <span class="text-ink-300 italic">read this before you close the tab.</span></p>
+      <p class="mt-5 text-lg text-ink-200">
+        Six months from now, you'll still be editing video. The question is whether you're doing it across <span class="hl-fuchsia font-semibold">twelve tabs and seven invoices</span>, or one prompt box.
+      </p>
+      <p class="mt-3 text-lg text-ink-200">
+        The Founder Pack is $97 once. That's less than two months of Runway. You either save thousands a year, or, within 30 days, you ask for your money back and we send it. <span class="hl font-semibold">There is no version of this where you lose.</span>
+      </p>
+      <p class="mt-3 text-lg text-ink-200">
+        Click the button. We'll see you inside.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a href="#offer" class="inline-flex items-center justify-center gap-2 rounded-full bg-lime hover:bg-lime-soft transition px-7 h-14 text-lg font-bold text-lime-ink shadow-glow">
+          Click to get started today
+          <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="mailto:hi@promptedit.com" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 hover:bg-white/[0.05] transition px-7 h-14 text-base font-semibold">
+          I have a question first
+        </a>
+      </div>
+      <p class="mt-6 text-sm text-ink-400">
+        The PromptEdit team · Brooklyn &amp; Lisbon
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-white/5 bg-ink-950">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 py-12">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-lime text-lime-ink font-bold">P</span>
+        <span class="font-semibold tracking-tight">promptedit</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-300">
+        <a href="index.html" class="hover:text-white">Home</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Licensing</a>
+        <a href="#" class="hover:text-white">Contact</a>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-white/5 text-xs text-ink-400 leading-relaxed space-y-3">
+      <p>
+        <strong class="text-ink-300">Earnings &amp; results disclaimer.</strong> Testimonials are real and from named customers. Their results are not typical. PromptEdit is a productivity tool, not a guarantee of income or audience growth. Your results depend on your effort, your craft, and the market you operate in.
+      </p>
+      <p>
+        <strong class="text-ink-300">Product disclaimer.</strong> Model availability depends on each provider's terms. We do our best to stock every leading model within a week of release. Model output quality varies. That's part of why we let you compare side-by-side.
+      </p>
+      <p>© 2026 PromptEdit Inc. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="md:hidden fixed bottom-0 inset-x-0 z-50 p-3 bg-gradient-to-t from-ink-950 via-ink-950/90 to-transparent">
+  <a href="#offer" class="flex items-center justify-center gap-2 rounded-full bg-lime hover:bg-lime-soft transition h-12 text-base font-semibold text-lime-ink shadow-glow">
+    Click to get started today
+    <svg viewBox="0 0 20 20" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10h10M11 6l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+<div class="md:hidden h-20"></div>
+
+</body>
+</html>
